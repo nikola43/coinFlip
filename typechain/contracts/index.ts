@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as bscTestnetConnections from "./BSC Testnet Connections";
 export type { bscTestnetConnections };
+import type * as linkTokenSol from "./LinkToken.sol";
+export type { linkTokenSol };
 export type { CoinFlip } from "./CoinFlip";
+export type { ITykheLuckyOracle } from "./ITykheLuckyOracle";
 export type { TykheLuckyOracle } from "./TykheLuckyOracle";
-export type { VRFv2Consumer } from "./VRFv2Consumer";

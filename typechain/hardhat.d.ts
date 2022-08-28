@@ -25,9 +25,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VRFConsumerBaseV2__factory>;
     getContractFactory(
-      name: "Initializable",
+      name: "IUniswapV2Router01",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Initializable__factory>;
+    ): Promise<Contracts.IUniswapV2Router01__factory>;
+    getContractFactory(
+      name: "IUniswapV2Router02",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUniswapV2Router02__factory>;
     getContractFactory(
       name: "BEP20Token",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -113,13 +117,45 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.CoinFlip__factory>;
     getContractFactory(
+      name: "ITykheLuckyOracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ITykheLuckyOracle__factory>;
+    getContractFactory(
+      name: "BasicToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BasicToken__factory>;
+    getContractFactory(
+      name: "ERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20__factory>;
+    getContractFactory(
+      name: "ERC20Basic",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Basic__factory>;
+    getContractFactory(
+      name: "ERC677",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC677__factory>;
+    getContractFactory(
+      name: "ERC677Receiver",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC677Receiver__factory>;
+    getContractFactory(
+      name: "ERC677Token",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC677Token__factory>;
+    getContractFactory(
+      name: "LinkToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.LinkToken__factory>;
+    getContractFactory(
+      name: "StandardToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StandardToken__factory>;
+    getContractFactory(
       name: "TykheLuckyOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TykheLuckyOracle__factory>;
-    getContractFactory(
-      name: "VRFv2Consumer",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.VRFv2Consumer__factory>;
 
     getContractAt(
       name: "LinkTokenInterface",
@@ -137,10 +173,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.VRFConsumerBaseV2>;
     getContractAt(
-      name: "Initializable",
+      name: "IUniswapV2Router01",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Initializable>;
+    ): Promise<Contracts.IUniswapV2Router01>;
+    getContractAt(
+      name: "IUniswapV2Router02",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUniswapV2Router02>;
     getContractAt(
       name: "BEP20Token",
       address: string,
@@ -247,15 +288,55 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.CoinFlip>;
     getContractAt(
+      name: "ITykheLuckyOracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ITykheLuckyOracle>;
+    getContractAt(
+      name: "BasicToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BasicToken>;
+    getContractAt(
+      name: "ERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20>;
+    getContractAt(
+      name: "ERC20Basic",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Basic>;
+    getContractAt(
+      name: "ERC677",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC677>;
+    getContractAt(
+      name: "ERC677Receiver",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC677Receiver>;
+    getContractAt(
+      name: "ERC677Token",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC677Token>;
+    getContractAt(
+      name: "LinkToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.LinkToken>;
+    getContractAt(
+      name: "StandardToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StandardToken>;
+    getContractAt(
       name: "TykheLuckyOracle",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.TykheLuckyOracle>;
-    getContractAt(
-      name: "VRFv2Consumer",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.VRFv2Consumer>;
 
     // default types
     getContractFactory(

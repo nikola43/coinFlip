@@ -38,6 +38,15 @@ export const chains: Record<string, Record<string, any>> = {
     }
 }
 
+
+export async function transferEth(from: SignerWithAddress, _to: string, amount: string) {
+    const tx = {
+        to: _to,
+        value: parseEther(amount)
+    };
+    await from.sendTransaction(tx);
+}
+
 export function getRouterName(dex: string) {
     return `${dex}Router`;
 }
@@ -563,5 +572,6 @@ export default module.exports = {
     deployProxyV2,
     verify,
     sleep,
-    connectBUSD
+    connectBUSD,
+    transferEth
 }

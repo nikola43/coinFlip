@@ -24,48 +24,81 @@ import type {
   PromiseOrValue,
 } from "../common";
 
-export type FlipStruct = {
-  user: PromiseOrValue<string>;
-  timestamp: PromiseOrValue<BigNumberish>;
-  flipNumber: PromiseOrValue<BigNumberish>;
-  flipResult: PromiseOrValue<boolean>;
-};
-
-export type FlipStructOutput = [string, BigNumber, BigNumber, boolean] & {
-  user: string;
-  timestamp: BigNumber;
-  flipNumber: BigNumber;
-  flipResult: boolean;
-};
-
 export interface CoinFlipInterface extends utils.Interface {
   functions: {
+    "cancelSubscription()": FunctionFragment;
+    "dexRouter()": FunctionFragment;
     "flipCoin(bool,uint256)": FunctionFragment;
-    "getLastFlips()": FunctionFragment;
+    "fundAndRequestRandomWords()": FunctionFragment;
+    "getLinkBalance()": FunctionFragment;
+    "getSubscriptionDetails()": FunctionFragment;
+    "pendingRequestExists()": FunctionFragment;
     "rawFulfillRandomWords(uint256,uint256[])": FunctionFragment;
     "requestRandomWords()": FunctionFragment;
+    "reserveBnbPercentageForHolders()": FunctionFragment;
+    "reservedBnbForBuyLink()": FunctionFragment;
+    "reservedBnbForBuyLinkPercentage()": FunctionFragment;
+    "reservedBnbHolders()": FunctionFragment;
+    "s_owner()": FunctionFragment;
     "s_randomWords(uint256)": FunctionFragment;
     "s_requestId()": FunctionFragment;
+    "topUpSubscription()": FunctionFragment;
     "usersFlips(uint256)": FunctionFragment;
+    "usersFlipsCounter()": FunctionFragment;
+    "withdrawBnb()": FunctionFragment;
+    "withdrawLink()": FunctionFragment;
+    "wordsIndex()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "cancelSubscription"
+      | "dexRouter"
       | "flipCoin"
-      | "getLastFlips"
+      | "fundAndRequestRandomWords"
+      | "getLinkBalance"
+      | "getSubscriptionDetails"
+      | "pendingRequestExists"
       | "rawFulfillRandomWords"
       | "requestRandomWords"
+      | "reserveBnbPercentageForHolders"
+      | "reservedBnbForBuyLink"
+      | "reservedBnbForBuyLinkPercentage"
+      | "reservedBnbHolders"
+      | "s_owner"
       | "s_randomWords"
       | "s_requestId"
+      | "topUpSubscription"
       | "usersFlips"
+      | "usersFlipsCounter"
+      | "withdrawBnb"
+      | "withdrawLink"
+      | "wordsIndex"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "cancelSubscription",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "dexRouter", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "flipCoin",
     values: [PromiseOrValue<boolean>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getLastFlips",
+    functionFragment: "fundAndRequestRandomWords",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLinkBalance",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSubscriptionDetails",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "pendingRequestExists",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -77,6 +110,23 @@ export interface CoinFlipInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "reserveBnbPercentageForHolders",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "reservedBnbForBuyLink",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "reservedBnbForBuyLinkPercentage",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "reservedBnbHolders",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "s_owner", values?: undefined): string;
+  encodeFunctionData(
     functionFragment: "s_randomWords",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -85,13 +135,50 @@ export interface CoinFlipInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "topUpSubscription",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "usersFlips",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "usersFlipsCounter",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawBnb",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawLink",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "wordsIndex",
+    values?: undefined
+  ): string;
 
+  decodeFunctionResult(
+    functionFragment: "cancelSubscription",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "dexRouter", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "flipCoin", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getLastFlips",
+    functionFragment: "fundAndRequestRandomWords",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getLinkBalance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getSubscriptionDetails",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "pendingRequestExists",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -103,6 +190,23 @@ export interface CoinFlipInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "reserveBnbPercentageForHolders",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "reservedBnbForBuyLink",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "reservedBnbForBuyLinkPercentage",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "reservedBnbHolders",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "s_owner", data: BytesLike): Result;
+  decodeFunctionResult(
     functionFragment: "s_randomWords",
     data: BytesLike
   ): Result;
@@ -110,7 +214,24 @@ export interface CoinFlipInterface extends utils.Interface {
     functionFragment: "s_requestId",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "topUpSubscription",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "usersFlips", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "usersFlipsCounter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawBnb",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawLink",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "wordsIndex", data: BytesLike): Result;
 
   events: {};
 }
@@ -142,13 +263,38 @@ export interface CoinFlip extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    cancelSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    dexRouter(overrides?: CallOverrides): Promise<[string]>;
+
     flipCoin(
       bet: PromiseOrValue<boolean>,
       mode: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getLastFlips(overrides?: CallOverrides): Promise<[FlipStructOutput[]]>;
+    fundAndRequestRandomWords(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getLinkBalance(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { balance: BigNumber }>;
+
+    getSubscriptionDetails(
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, string, string[]] & {
+        balance: BigNumber;
+        reqCount: BigNumber;
+        owner: string;
+        consumers: string[];
+      }
+    >;
+
+    pendingRequestExists(overrides?: CallOverrides): Promise<[boolean]>;
 
     rawFulfillRandomWords(
       requestId: PromiseOrValue<BigNumberish>,
@@ -160,12 +306,30 @@ export interface CoinFlip extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    reserveBnbPercentageForHolders(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    reservedBnbForBuyLink(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    reservedBnbForBuyLinkPercentage(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    reservedBnbHolders(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    s_owner(overrides?: CallOverrides): Promise<[string]>;
+
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     s_requestId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    topUpSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     usersFlips(
       arg0: PromiseOrValue<BigNumberish>,
@@ -175,10 +339,28 @@ export interface CoinFlip extends BaseContract {
         user: string;
         timestamp: BigNumber;
         flipNumber: BigNumber;
-        flipResult: boolean;
+        win: boolean;
       }
     >;
+
+    usersFlipsCounter(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    withdrawBnb(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    withdrawLink(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
+
+  cancelSubscription(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  dexRouter(overrides?: CallOverrides): Promise<string>;
 
   flipCoin(
     bet: PromiseOrValue<boolean>,
@@ -186,7 +368,24 @@ export interface CoinFlip extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getLastFlips(overrides?: CallOverrides): Promise<FlipStructOutput[]>;
+  fundAndRequestRandomWords(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getLinkBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getSubscriptionDetails(
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, string, string[]] & {
+      balance: BigNumber;
+      reqCount: BigNumber;
+      owner: string;
+      consumers: string[];
+    }
+  >;
+
+  pendingRequestExists(overrides?: CallOverrides): Promise<boolean>;
 
   rawFulfillRandomWords(
     requestId: PromiseOrValue<BigNumberish>,
@@ -198,12 +397,28 @@ export interface CoinFlip extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  reserveBnbPercentageForHolders(overrides?: CallOverrides): Promise<BigNumber>;
+
+  reservedBnbForBuyLink(overrides?: CallOverrides): Promise<BigNumber>;
+
+  reservedBnbForBuyLinkPercentage(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  reservedBnbHolders(overrides?: CallOverrides): Promise<BigNumber>;
+
+  s_owner(overrides?: CallOverrides): Promise<string>;
+
   s_randomWords(
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   s_requestId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  topUpSubscription(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   usersFlips(
     arg0: PromiseOrValue<BigNumberish>,
@@ -213,18 +428,49 @@ export interface CoinFlip extends BaseContract {
       user: string;
       timestamp: BigNumber;
       flipNumber: BigNumber;
-      flipResult: boolean;
+      win: boolean;
     }
   >;
 
+  usersFlipsCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+  withdrawBnb(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  withdrawLink(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  wordsIndex(overrides?: CallOverrides): Promise<BigNumber>;
+
   callStatic: {
+    cancelSubscription(overrides?: CallOverrides): Promise<void>;
+
+    dexRouter(overrides?: CallOverrides): Promise<string>;
+
     flipCoin(
       bet: PromiseOrValue<boolean>,
       mode: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getLastFlips(overrides?: CallOverrides): Promise<FlipStructOutput[]>;
+    fundAndRequestRandomWords(overrides?: CallOverrides): Promise<void>;
+
+    getLinkBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSubscriptionDetails(
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, string, string[]] & {
+        balance: BigNumber;
+        reqCount: BigNumber;
+        owner: string;
+        consumers: string[];
+      }
+    >;
+
+    pendingRequestExists(overrides?: CallOverrides): Promise<boolean>;
 
     rawFulfillRandomWords(
       requestId: PromiseOrValue<BigNumberish>,
@@ -234,12 +480,28 @@ export interface CoinFlip extends BaseContract {
 
     requestRandomWords(overrides?: CallOverrides): Promise<void>;
 
+    reserveBnbPercentageForHolders(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    reservedBnbForBuyLink(overrides?: CallOverrides): Promise<BigNumber>;
+
+    reservedBnbForBuyLinkPercentage(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    reservedBnbHolders(overrides?: CallOverrides): Promise<BigNumber>;
+
+    s_owner(overrides?: CallOverrides): Promise<string>;
+
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     s_requestId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    topUpSubscription(overrides?: CallOverrides): Promise<void>;
 
     usersFlips(
       arg0: PromiseOrValue<BigNumberish>,
@@ -249,21 +511,43 @@ export interface CoinFlip extends BaseContract {
         user: string;
         timestamp: BigNumber;
         flipNumber: BigNumber;
-        flipResult: boolean;
+        win: boolean;
       }
     >;
+
+    usersFlipsCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdrawBnb(overrides?: CallOverrides): Promise<void>;
+
+    withdrawLink(overrides?: CallOverrides): Promise<void>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {};
 
   estimateGas: {
+    cancelSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    dexRouter(overrides?: CallOverrides): Promise<BigNumber>;
+
     flipCoin(
       bet: PromiseOrValue<boolean>,
       mode: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getLastFlips(overrides?: CallOverrides): Promise<BigNumber>;
+    fundAndRequestRandomWords(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getLinkBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSubscriptionDetails(overrides?: CallOverrides): Promise<BigNumber>;
+
+    pendingRequestExists(overrides?: CallOverrides): Promise<BigNumber>;
 
     rawFulfillRandomWords(
       requestId: PromiseOrValue<BigNumberish>,
@@ -274,6 +558,20 @@ export interface CoinFlip extends BaseContract {
     requestRandomWords(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    reserveBnbPercentageForHolders(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    reservedBnbForBuyLink(overrides?: CallOverrides): Promise<BigNumber>;
+
+    reservedBnbForBuyLinkPercentage(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    reservedBnbHolders(overrides?: CallOverrides): Promise<BigNumber>;
+
+    s_owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
@@ -282,20 +580,54 @@ export interface CoinFlip extends BaseContract {
 
     s_requestId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    topUpSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     usersFlips(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    usersFlipsCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdrawBnb(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawLink(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    cancelSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    dexRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     flipCoin(
       bet: PromiseOrValue<boolean>,
       mode: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getLastFlips(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    fundAndRequestRandomWords(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getLinkBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getSubscriptionDetails(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    pendingRequestExists(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     rawFulfillRandomWords(
       requestId: PromiseOrValue<BigNumberish>,
@@ -307,6 +639,24 @@ export interface CoinFlip extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    reserveBnbPercentageForHolders(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    reservedBnbForBuyLink(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    reservedBnbForBuyLinkPercentage(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    reservedBnbHolders(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    s_owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -314,9 +664,25 @@ export interface CoinFlip extends BaseContract {
 
     s_requestId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    topUpSubscription(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     usersFlips(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    usersFlipsCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    withdrawBnb(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawLink(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -1,25 +1,31 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
+import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 struct Flip {
     address user;
     uint256 timestamp;
     uint256 flipNumber;
-    bool flipResult;
+    bool win;
 }
 
 contract CoinFlip is VRFConsumerBaseV2 {
     VRFCoordinatorV2Interface COORDINATOR;
-
+    LinkTokenInterface LINKTOKEN;
     // Your subscription ID.
     uint64 s_subscriptionId;
 
     // Goerli coordinator. For other networks,
     // see https://docs.chain.link/docs/vrf-contracts/#configurations
     address vrfCoordinator = 0x6A2AAd07396B36Fe02a22b33cf443582f682c82f;
+
+    // Goerli LINK token contract. For other networks, see
+    // https://docs.chain.link/docs/vrf-contracts/#configurations
+    address link_token_contract = 0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06;
 
     // The gas lane to use, which specifies the maximum gas price to bump to.
     // For a list of available gas lanes on each network,
@@ -44,22 +50,52 @@ contract CoinFlip is VRFConsumerBaseV2 {
 
     uint256[] public s_randomWords;
     uint256 public s_requestId;
-    address s_owner;
+    address public s_owner;
+    uint256 public wordsIndex = 0; // todo set to private in mainnet
 
+    // FLIP---------------------------------------------------------------------
     mapping(uint256 => Flip) public usersFlips;
-    uint256 private usersFlipsCounter;
+    uint256 public usersFlipsCounter;
+    uint256 public reservedBnbForBuyLink = 0; // todo set to private in mainnet
+    uint256 public reservedBnbHolders = 0; // todo set to private in mainnet
+    uint256 public reservedBnbForBuyLinkPercentage = 10; // todo set to private in mainnet
+    uint256 public reserveBnbPercentageForHolders = 3; // todo set to private in mainnet
 
-    constructor(uint64 subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
+    IUniswapV2Router02 public dexRouter;
+
+    modifier onlyOwner() {
+        require(msg.sender == s_owner);
+        _;
+    }
+
+    constructor() VRFConsumerBaseV2(vrfCoordinator) {
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
+        LINKTOKEN = LinkTokenInterface(link_token_contract);
         s_owner = msg.sender;
-        s_subscriptionId = subscriptionId;
+        //Create a new subscription when you deploy the contract.
+        createNewSubscription();
 
         usersFlipsCounter = 0;
+        dexRouter = IUniswapV2Router02(
+            0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3
+        );
     }
 
     receive() external payable {}
 
     fallback() external payable {}
+
+    // Assumes the subscription is funded sufficiently.
+    function requestRandomWordsFromContract() internal {
+        // Will revert if subscription is not set and funded.
+        s_requestId = COORDINATOR.requestRandomWords(
+            keyHash,
+            s_subscriptionId,
+            requestConfirmations,
+            callbackGasLimit,
+            numWords
+        );
+    }
 
     // Assumes the subscription is funded sufficiently.
     function requestRandomWords() external onlyOwner {
@@ -80,23 +116,92 @@ contract CoinFlip is VRFConsumerBaseV2 {
         s_randomWords = randomWords;
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == s_owner);
-        _;
+    // get the details of the subscription
+    function getSubscriptionDetails()
+        external
+        view
+        returns (
+            uint96 balance,
+            uint64 reqCount,
+            address owner,
+            address[] memory consumers
+        )
+    {
+        return COORDINATOR.getSubscription(s_subscriptionId);
     }
 
-    function getLastFlips() external view returns (Flip[] memory) {
-        Flip[] memory flips = new Flip[](usersFlipsCounter);
-
-        for (uint256 index = 0; index < usersFlipsCounter; index++) {
-            flips[index] = usersFlips[index];
-        }
-
-        return flips;
+    // check if pending requests Exist
+    function pendingRequestExists() external view returns (bool) {
+        (, bytes memory returnData) = address(COORDINATOR).staticcall(
+            abi.encodeWithSignature(
+                "pendingRequestExists(uint64)",
+                s_subscriptionId
+            )
+        );
+        return abi.decode(returnData, (bool));
     }
 
-    function flipCoin(bool bet, uint256 mode) external payable {
-        uint256 requiredAmount = 50000000000000000; // 0.05 BNB
+    // Create a new subscription when the contract is initially deployed.
+    function createNewSubscription() private onlyOwner {
+        s_subscriptionId = COORDINATOR.createSubscription();
+        // Add this contract as a consumer of its own subscription.
+        COORDINATOR.addConsumer(s_subscriptionId, address(this));
+    }
+
+    // Assumes this contract owns link.
+    // 1000000000000000000 = 1 LINK
+    function topUpSubscriptionFromContract() internal {
+        uint256 linkBalance = LINKTOKEN.balanceOf(address(this));
+        require(linkBalance > 0, "Zero link balance");
+        LINKTOKEN.transferAndCall(
+            address(COORDINATOR),
+            linkBalance,
+            abi.encode(s_subscriptionId)
+        );
+    }
+
+    // Assumes this contract owns link.
+    // 1000000000000000000 = 1 LINK
+    function topUpSubscription() external onlyOwner {
+        topUpSubscriptionFromContract();
+    }
+
+    function cancelSubscription() external onlyOwner {
+        // Cancel the subscription and send the remaining LINK to a wallet address.
+        COORDINATOR.cancelSubscription(s_subscriptionId, s_owner);
+        s_subscriptionId = 0;
+    }
+
+    // Transfer this contract's funds to an address.
+    // 1000000000000000000 = 1 LINK
+    function withdrawLink() external onlyOwner {
+        LINKTOKEN.transfer(s_owner, LINKTOKEN.balanceOf(address(this)));
+    }
+
+    // Link balance of the contract
+    function getLinkBalance() external view returns (uint256 balance) {
+        return LINKTOKEN.balanceOf(address(this));
+    }
+
+    // Assumes this contract owns link
+    // This method functions similarly to VRFv1, but you must estimate LINK costs
+    // yourself based on the gas lane and limits.
+    // 1000000000000000000 = 1 LINK
+    function fundAndRequestRandomWords() external onlyOwner {
+        topUpSubscriptionFromContract();
+        // Will revert if subscription is not set and funded.
+        s_requestId = COORDINATOR.requestRandomWords(
+            keyHash,
+            s_subscriptionId,
+            requestConfirmations,
+            callbackGasLimit,
+            numWords
+        );
+    }
+
+    // FLIP---------------------------------------------------------------------
+    function calcRequiredAmount(uint256 mode) internal pure returns (uint256) {
+        uint256 requiredAmount = 0;
         if (mode == 0) {
             requiredAmount = 50000000000000000; // 0.1 BNB
         } else if (mode == 1) {
@@ -112,10 +217,14 @@ contract CoinFlip is VRFConsumerBaseV2 {
         } else {
             revert("invalid mode");
         }
+        return requiredAmount;
+    }
 
+    function flipCoin(bool bet, uint256 mode) external payable {
+        uint256 requiredAmount = calcRequiredAmount(mode);
         require(msg.value >= requiredAmount, "Low amount");
 
-        uint256 flipResult = s_randomWords[0];
+        uint256 flipResult = s_randomWords[wordsIndex];
         bool win;
         if (bet) {
             win = flipResult % 2 == 0;
@@ -124,12 +233,72 @@ contract CoinFlip is VRFConsumerBaseV2 {
         }
 
         Flip memory flip = Flip(msg.sender, block.timestamp, flipResult, win);
-
-        usersFlipsCounter += 1;
         usersFlips[usersFlipsCounter] = flip;
-
-        if (win) {
-            payable(msg.sender).transfer(msg.value * 2);
+        wordsIndex++;
+        usersFlipsCounter++;
+        if (wordsIndex == 2) {
+            wordsIndex = 0;
+            requestRandomWordsFromContract();
         }
+
+        // buy link
+        uint256 amountForBuyLink = (msg.value *
+            reservedBnbForBuyLinkPercentage) / 100;
+        uint256 amountForHolders = (msg.value *
+            reserveBnbPercentageForHolders) / 100;
+        reservedBnbForBuyLink += amountForBuyLink;
+        reservedBnbHolders += amountForHolders;
+
+        // Distribute to holders
+        if (reservedBnbHolders >= 250000000000000000) {}
+
+        // buy link and top up
+        if (reservedBnbForBuyLink >= 250000000000000000) {
+            swapBnbForLink();
+            topUpSubscriptionFromContract();
+        }
+
+        // send winnner amount
+        if (win) {
+            uint256 winnerAmount = (msg.value * 2) -
+                amountForBuyLink -
+                amountForHolders;
+
+            payable(msg.sender).transfer(winnerAmount);
+        }
+    }
+
+    // return the route given the busd addresses and the token
+    function pathTokensForTokens(address add1, address add2)
+        private
+        pure
+        returns (address[] memory)
+    {
+        address[] memory path = new address[](2);
+        path[0] = add1;
+        path[1] = add2;
+        return path;
+    }
+
+    function swapBnbForLink() internal {
+        address[] memory path = pathTokensForTokens(
+            dexRouter.WETH(),
+            link_token_contract
+        );
+
+        uint256 amountOutIn = dexRouter.getAmountsOut(msg.value, path)[1];
+
+        // make the swap
+        dexRouter.swapExactETHForTokens{value: msg.value}(
+            amountOutIn,
+            path,
+            address(this),
+            block.timestamp + 1000
+        );
+    }
+
+    function withdrawBnb() public onlyOwner {
+        (bool os, ) = payable(s_owner).call{value: address(this).balance}("");
+        require(os);
     }
 }
