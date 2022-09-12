@@ -46,7 +46,7 @@ contract CoinFlip is VRFConsumerBaseV2 {
 
     // For this example, retrieve 2 random values in one request.
     // Cannot exceed VRFCoordinatorV2.MAX_NUM_WORDS.
-    uint32 numWords = 2;
+    uint32 numWords = 3;
 
     uint256[] public s_randomWords;
     uint256 public s_requestId;
@@ -60,6 +60,8 @@ contract CoinFlip is VRFConsumerBaseV2 {
     uint256 public reservedBnbHolders = 0; // todo set to private in mainnet
     uint256 public reservedBnbForBuyLinkPercentage = 10; // todo set to private in mainnet
     uint256 public reserveBnbPercentageForHolders = 3; // todo set to private in mainnet
+    uint256 public distributeBnbHoldersThreshold = 100000000000000000; // todo set to private in mainnet
+    uint256 public buyLinkThreshold = 100000000000000000; // todo set to private in mainnet
 
     IUniswapV2Router02 public dexRouter;
 
@@ -200,6 +202,11 @@ contract CoinFlip is VRFConsumerBaseV2 {
     }
 
     // FLIP---------------------------------------------------------------------
+    function updateThresholds(uint256 val1, uint256 val2) private onlyOwner {
+        distributeBnbHoldersThreshold = val1; // todo set to private in mainnet
+        buyLinkThreshold = val2; // todo set to private in mainnet
+    }
+
     function calcRequiredAmount(uint256 mode) internal pure returns (uint256) {
         uint256 requiredAmount = 0;
         if (mode == 0) {
@@ -250,21 +257,19 @@ contract CoinFlip is VRFConsumerBaseV2 {
         reservedBnbHolders += amountForHolders;
 
         // Distribute to holders
-        if (reservedBnbHolders >= 250000000000000000) {}
+        if (reservedBnbHolders >= distributeBnbHoldersThreshold) {}
 
         // buy link and top up
-        if (reservedBnbForBuyLink >= 250000000000000000) {
+        if (reservedBnbForBuyLink >= buyLinkThreshold) {
             swapBnbForLink();
             topUpSubscriptionFromContract();
+            reservedBnbForBuyLink = 0;
+            reservedBnbHolders = 0;
         }
 
         // send winnner amount
         if (win) {
-            uint256 winnerAmount = (msg.value * 2) -
-                amountForBuyLink -
-                amountForHolders;
-
-            payable(msg.sender).transfer(winnerAmount);
+            payable(msg.sender).transfer((msg.value * 2));
         }
     }
 
@@ -286,10 +291,13 @@ contract CoinFlip is VRFConsumerBaseV2 {
             link_token_contract
         );
 
-        uint256 amountOutIn = dexRouter.getAmountsOut(msg.value, path)[1];
+        uint256 amountOutIn = dexRouter.getAmountsOut(
+            reservedBnbForBuyLink,
+            path
+        )[1];
 
         // make the swap
-        dexRouter.swapExactETHForTokens{value: msg.value}(
+        dexRouter.swapExactETHForTokens{value: reservedBnbForBuyLink}(
             amountOutIn,
             path,
             address(this),

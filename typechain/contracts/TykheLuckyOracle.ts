@@ -25,53 +25,58 @@ import type {
 
 export interface TykheLuckyOracleInterface extends utils.Interface {
   functions: {
-    "addConsumer(address)": FunctionFragment;
     "askOracle(uint256)": FunctionFragment;
-    "cancelSubscription(address)": FunctionFragment;
-    "fundAndRequestRandomWords(uint256)": FunctionFragment;
+    "cancelSubscription()": FunctionFragment;
+    "dexRouter()": FunctionFragment;
+    "fundAndRequestRandomWords()": FunctionFragment;
+    "getLinkBalance()": FunctionFragment;
     "getSubscriptionDetails()": FunctionFragment;
     "pendingRequestExists()": FunctionFragment;
     "rawFulfillRandomWords(uint256,uint256[])": FunctionFragment;
-    "removeConsumer(address)": FunctionFragment;
     "requestRandomWords()": FunctionFragment;
+    "s_owner()": FunctionFragment;
     "s_randomWords(uint256)": FunctionFragment;
     "s_requestId()": FunctionFragment;
-    "topUpSubscription(uint256)": FunctionFragment;
-    "withdraw(uint256,address)": FunctionFragment;
+    "topUpSubscription()": FunctionFragment;
+    "withdrawLink()": FunctionFragment;
+    "wordsIndex()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "addConsumer"
       | "askOracle"
       | "cancelSubscription"
+      | "dexRouter"
       | "fundAndRequestRandomWords"
+      | "getLinkBalance"
       | "getSubscriptionDetails"
       | "pendingRequestExists"
       | "rawFulfillRandomWords"
-      | "removeConsumer"
       | "requestRandomWords"
+      | "s_owner"
       | "s_randomWords"
       | "s_requestId"
       | "topUpSubscription"
-      | "withdraw"
+      | "withdrawLink"
+      | "wordsIndex"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "addConsumer",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(
     functionFragment: "askOracle",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "cancelSubscription",
-    values: [PromiseOrValue<string>]
+    values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "dexRouter", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "fundAndRequestRandomWords",
-    values: [PromiseOrValue<BigNumberish>]
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLinkBalance",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getSubscriptionDetails",
@@ -86,13 +91,10 @@ export interface TykheLuckyOracleInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "removeConsumer",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "requestRandomWords",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "s_owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "s_randomWords",
     values: [PromiseOrValue<BigNumberish>]
@@ -103,24 +105,29 @@ export interface TykheLuckyOracleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "topUpSubscription",
-    values: [PromiseOrValue<BigNumberish>]
+    values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+    functionFragment: "withdrawLink",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "wordsIndex",
+    values?: undefined
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "addConsumer",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "askOracle", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "cancelSubscription",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "dexRouter", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "fundAndRequestRandomWords",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getLinkBalance",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -136,13 +143,10 @@ export interface TykheLuckyOracleInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeConsumer",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "requestRandomWords",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "s_owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "s_randomWords",
     data: BytesLike
@@ -155,7 +159,11 @@ export interface TykheLuckyOracleInterface extends utils.Interface {
     functionFragment: "topUpSubscription",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawLink",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "wordsIndex", data: BytesLike): Result;
 
   events: {};
 }
@@ -187,25 +195,24 @@ export interface TykheLuckyOracle extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    addConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     askOracle(
       index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     cancelSubscription(
-      receivingWallet: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    dexRouter(overrides?: CallOverrides): Promise<[string]>;
+
     fundAndRequestRandomWords(
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    getLinkBalance(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { balance: BigNumber }>;
 
     getSubscriptionDetails(
       overrides?: CallOverrides
@@ -226,14 +233,11 @@ export interface TykheLuckyOracle extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    removeConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     requestRandomWords(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    s_owner(overrides?: CallOverrides): Promise<[string]>;
 
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
@@ -243,21 +247,15 @@ export interface TykheLuckyOracle extends BaseContract {
     s_requestId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     topUpSubscription(
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      to: PromiseOrValue<string>,
+    withdrawLink(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
-
-  addConsumer(
-    consumerAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   askOracle(
     index: PromiseOrValue<BigNumberish>,
@@ -265,14 +263,16 @@ export interface TykheLuckyOracle extends BaseContract {
   ): Promise<BigNumber>;
 
   cancelSubscription(
-    receivingWallet: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  dexRouter(overrides?: CallOverrides): Promise<string>;
+
   fundAndRequestRandomWords(
-    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  getLinkBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
   getSubscriptionDetails(
     overrides?: CallOverrides
@@ -293,14 +293,11 @@ export interface TykheLuckyOracle extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  removeConsumer(
-    consumerAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   requestRandomWords(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  s_owner(overrides?: CallOverrides): Promise<string>;
 
   s_randomWords(
     arg0: PromiseOrValue<BigNumberish>,
@@ -310,36 +307,28 @@ export interface TykheLuckyOracle extends BaseContract {
   s_requestId(overrides?: CallOverrides): Promise<BigNumber>;
 
   topUpSubscription(
-    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  withdraw(
-    amount: PromiseOrValue<BigNumberish>,
-    to: PromiseOrValue<string>,
+  withdrawLink(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  wordsIndex(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    addConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     askOracle(
       index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    cancelSubscription(
-      receivingWallet: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    cancelSubscription(overrides?: CallOverrides): Promise<void>;
 
-    fundAndRequestRandomWords(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    dexRouter(overrides?: CallOverrides): Promise<string>;
+
+    fundAndRequestRandomWords(overrides?: CallOverrides): Promise<void>;
+
+    getLinkBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
     getSubscriptionDetails(
       overrides?: CallOverrides
@@ -360,12 +349,9 @@ export interface TykheLuckyOracle extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    removeConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     requestRandomWords(overrides?: CallOverrides): Promise<void>;
+
+    s_owner(overrides?: CallOverrides): Promise<string>;
 
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
@@ -374,40 +360,32 @@ export interface TykheLuckyOracle extends BaseContract {
 
     s_requestId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    topUpSubscription(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    topUpSubscription(overrides?: CallOverrides): Promise<void>;
 
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      to: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    withdrawLink(overrides?: CallOverrides): Promise<void>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {};
 
   estimateGas: {
-    addConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     askOracle(
       index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     cancelSubscription(
-      receivingWallet: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    dexRouter(overrides?: CallOverrides): Promise<BigNumber>;
+
     fundAndRequestRandomWords(
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    getLinkBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
     getSubscriptionDetails(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -419,14 +397,11 @@ export interface TykheLuckyOracle extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    removeConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     requestRandomWords(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    s_owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
@@ -436,37 +411,33 @@ export interface TykheLuckyOracle extends BaseContract {
     s_requestId(overrides?: CallOverrides): Promise<BigNumber>;
 
     topUpSubscription(
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      to: PromiseOrValue<string>,
+    withdrawLink(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    addConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     askOracle(
       index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     cancelSubscription(
-      receivingWallet: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    dexRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     fundAndRequestRandomWords(
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    getLinkBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getSubscriptionDetails(
       overrides?: CallOverrides
@@ -482,14 +453,11 @@ export interface TykheLuckyOracle extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    removeConsumer(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     requestRandomWords(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    s_owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     s_randomWords(
       arg0: PromiseOrValue<BigNumberish>,
@@ -499,14 +467,13 @@ export interface TykheLuckyOracle extends BaseContract {
     s_requestId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     topUpSubscription(
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      to: PromiseOrValue<string>,
+    withdrawLink(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    wordsIndex(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

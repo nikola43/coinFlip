@@ -5,6 +5,7 @@ pragma solidity ^0.8.7;
 import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
+import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 /**
  * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
@@ -49,7 +50,11 @@ contract TykheLuckyOracle is VRFConsumerBaseV2 {
 
     uint256[] public s_randomWords;
     uint256 public s_requestId;
-    address s_owner;
+    address public s_owner;
+    uint256 public wordsIndex = 0; // todo set to private in mainnet
+
+    //---
+    IUniswapV2Router02 public dexRouter;
 
     modifier onlyOwner() {
         require(msg.sender == s_owner);
@@ -57,11 +62,30 @@ contract TykheLuckyOracle is VRFConsumerBaseV2 {
     }
 
     constructor() VRFConsumerBaseV2(vrfCoordinator) {
+        dexRouter = IUniswapV2Router02(
+            0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3
+        );
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         LINKTOKEN = LinkTokenInterface(link_token_contract);
         s_owner = msg.sender;
         //Create a new subscription when you deploy the contract.
         createNewSubscription();
+    }
+
+    receive() external payable {}
+
+    fallback() external payable {}
+
+    // Assumes the subscription is funded sufficiently.
+    function requestRandomWordsFromContract() internal {
+        // Will revert if subscription is not set and funded.
+        s_requestId = COORDINATOR.requestRandomWords(
+            keyHash,
+            s_subscriptionId,
+            requestConfirmations,
+            callbackGasLimit,
+            numWords
+        );
     }
 
     // Assumes the subscription is funded sufficiently.
@@ -117,46 +141,45 @@ contract TykheLuckyOracle is VRFConsumerBaseV2 {
 
     // Assumes this contract owns link.
     // 1000000000000000000 = 1 LINK
-    function topUpSubscription(uint256 amount) external onlyOwner {
+    function topUpSubscriptionFromContract() internal {
+        uint256 linkBalance = LINKTOKEN.balanceOf(address(this));
+        require(linkBalance > 0, "Zero link balance");
         LINKTOKEN.transferAndCall(
             address(COORDINATOR),
-            amount,
+            linkBalance,
             abi.encode(s_subscriptionId)
         );
     }
 
-    function addConsumer(address consumerAddress) external onlyOwner {
-        // Add a consumer contract to the subscription.
-        COORDINATOR.addConsumer(s_subscriptionId, consumerAddress);
+    // Assumes this contract owns link.
+    // 1000000000000000000 = 1 LINK
+    function topUpSubscription() external onlyOwner {
+        topUpSubscriptionFromContract();
     }
 
-    function removeConsumer(address consumerAddress) external onlyOwner {
-        // Remove a consumer contract from the subscription.
-        COORDINATOR.removeConsumer(s_subscriptionId, consumerAddress);
-    }
-
-    function cancelSubscription(address receivingWallet) external onlyOwner {
+    function cancelSubscription() external onlyOwner {
         // Cancel the subscription and send the remaining LINK to a wallet address.
-        COORDINATOR.cancelSubscription(s_subscriptionId, receivingWallet);
+        COORDINATOR.cancelSubscription(s_subscriptionId, s_owner);
         s_subscriptionId = 0;
     }
 
     // Transfer this contract's funds to an address.
     // 1000000000000000000 = 1 LINK
-    function withdraw(uint256 amount, address to) external onlyOwner {
-        LINKTOKEN.transfer(to, amount);
+    function withdrawLink() external onlyOwner {
+        LINKTOKEN.transfer(s_owner, LINKTOKEN.balanceOf(address(this)));
+    }
+
+    // Link balance of the contract
+    function getLinkBalance() external view returns (uint256 balance) {
+        return LINKTOKEN.balanceOf(address(this));
     }
 
     // Assumes this contract owns link
     // This method functions similarly to VRFv1, but you must estimate LINK costs
     // yourself based on the gas lane and limits.
     // 1000000000000000000 = 1 LINK
-    function fundAndRequestRandomWords(uint256 amount) external onlyOwner {
-        LINKTOKEN.transferAndCall(
-            address(COORDINATOR),
-            amount,
-            abi.encode(s_subscriptionId)
-        );
+    function fundAndRequestRandomWords() external onlyOwner {
+        topUpSubscriptionFromContract();
         // Will revert if subscription is not set and funded.
         s_requestId = COORDINATOR.requestRandomWords(
             keyHash,
@@ -169,5 +192,37 @@ contract TykheLuckyOracle is VRFConsumerBaseV2 {
 
     function askOracle(uint256 index) external view returns (uint256) {
         return s_randomWords[index];
+    }
+
+    // return the route given the busd addresses and the token
+    function pathTokensForTokens(address add1, address add2)
+        private
+        pure
+        returns (address[] memory)
+    {
+        address[] memory path = new address[](2);
+        path[0] = add1;
+        path[1] = add2;
+        return path;
+    }
+
+    function swapBnbForLink() internal {
+        address[] memory path = pathTokensForTokens(
+            dexRouter.WETH(),
+            link_token_contract
+        );
+
+        uint256 amountOutIn = dexRouter.getAmountsOut(
+            1,
+            path
+        )[1];
+
+        // make the swap
+        dexRouter.swapExactETHForTokens{value: 1}(
+            amountOutIn,
+            path,
+            address(this),
+            block.timestamp + 1000
+        );
     }
 }

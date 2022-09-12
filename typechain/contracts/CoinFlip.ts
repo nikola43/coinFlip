@@ -26,8 +26,10 @@ import type {
 
 export interface CoinFlipInterface extends utils.Interface {
   functions: {
+    "buyLinkThreshold()": FunctionFragment;
     "cancelSubscription()": FunctionFragment;
     "dexRouter()": FunctionFragment;
+    "distributeBnbHoldersThreshold()": FunctionFragment;
     "flipCoin(bool,uint256)": FunctionFragment;
     "fundAndRequestRandomWords()": FunctionFragment;
     "getLinkBalance()": FunctionFragment;
@@ -52,8 +54,10 @@ export interface CoinFlipInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "buyLinkThreshold"
       | "cancelSubscription"
       | "dexRouter"
+      | "distributeBnbHoldersThreshold"
       | "flipCoin"
       | "fundAndRequestRandomWords"
       | "getLinkBalance"
@@ -77,10 +81,18 @@ export interface CoinFlipInterface extends utils.Interface {
   ): FunctionFragment;
 
   encodeFunctionData(
+    functionFragment: "buyLinkThreshold",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "cancelSubscription",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "dexRouter", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "distributeBnbHoldersThreshold",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "flipCoin",
     values: [PromiseOrValue<boolean>, PromiseOrValue<BigNumberish>]
@@ -160,10 +172,18 @@ export interface CoinFlipInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "buyLinkThreshold",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "cancelSubscription",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "dexRouter", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "distributeBnbHoldersThreshold",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "flipCoin", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "fundAndRequestRandomWords",
@@ -263,11 +283,17 @@ export interface CoinFlip extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    buyLinkThreshold(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     cancelSubscription(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     dexRouter(overrides?: CallOverrides): Promise<[string]>;
+
+    distributeBnbHoldersThreshold(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     flipCoin(
       bet: PromiseOrValue<boolean>,
@@ -356,11 +382,15 @@ export interface CoinFlip extends BaseContract {
     wordsIndex(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
+  buyLinkThreshold(overrides?: CallOverrides): Promise<BigNumber>;
+
   cancelSubscription(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   dexRouter(overrides?: CallOverrides): Promise<string>;
+
+  distributeBnbHoldersThreshold(overrides?: CallOverrides): Promise<BigNumber>;
 
   flipCoin(
     bet: PromiseOrValue<boolean>,
@@ -445,9 +475,15 @@ export interface CoinFlip extends BaseContract {
   wordsIndex(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
+    buyLinkThreshold(overrides?: CallOverrides): Promise<BigNumber>;
+
     cancelSubscription(overrides?: CallOverrides): Promise<void>;
 
     dexRouter(overrides?: CallOverrides): Promise<string>;
+
+    distributeBnbHoldersThreshold(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     flipCoin(
       bet: PromiseOrValue<boolean>,
@@ -527,11 +563,17 @@ export interface CoinFlip extends BaseContract {
   filters: {};
 
   estimateGas: {
+    buyLinkThreshold(overrides?: CallOverrides): Promise<BigNumber>;
+
     cancelSubscription(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     dexRouter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    distributeBnbHoldersThreshold(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     flipCoin(
       bet: PromiseOrValue<boolean>,
@@ -603,11 +645,17 @@ export interface CoinFlip extends BaseContract {
   };
 
   populateTransaction: {
+    buyLinkThreshold(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     cancelSubscription(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     dexRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    distributeBnbHoldersThreshold(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     flipCoin(
       bet: PromiseOrValue<boolean>,
