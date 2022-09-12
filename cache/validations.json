@@ -139,6 +139,504 @@
       "CoinFlip": {
         "src": "contracts/CoinFlip.sol:16",
         "version": {
+          "withMetadata": "e95850f5dd5ecdf39612593157b6e264d1e6f3c8c40cf24bc6765affd095fe6d",
+          "withoutMetadata": "2883ae3fa15ea74260227c17430ff713d02918ec5dfd3840372bf32047df0d5d",
+          "linkedWithoutMetadata": "2883ae3fa15ea74260227c17430ff713d02918ec5dfd3840372bf32047df0d5d"
+        },
+        "inherit": [
+          "VRFConsumerBaseV2"
+        ],
+        "libraries": [],
+        "methods": [
+          "()",
+          "()",
+          "()",
+          "requestRandomWords()",
+          "getSubscriptionDetails()",
+          "pendingRequestExists()",
+          "topUpSubscription()",
+          "cancelSubscription()",
+          "withdrawLink()",
+          "getLinkBalance()",
+          "fundAndRequestRandomWords()",
+          "flipCoin(bool,uint256)",
+          "withdrawBnb()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CoinFlip",
+            "src": "contracts/CoinFlip.sol:73"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "vrfCoordinator",
+            "src": "contracts/CoinFlip.sol:24"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "link_token_contract",
+            "src": "contracts/CoinFlip.sol:28"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "keyHash",
+            "src": "contracts/CoinFlip.sol:33"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "callbackGasLimit",
+            "src": "contracts/CoinFlip.sol:42"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "requestConfirmations",
+            "src": "contracts/CoinFlip.sol:45"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "numWords",
+            "src": "contracts/CoinFlip.sol:49"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "wordsIndex",
+            "src": "contracts/CoinFlip.sol:54"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "reservedBnbForBuyLink",
+            "src": "contracts/CoinFlip.sol:59"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "reservedBnbHolders",
+            "src": "contracts/CoinFlip.sol:60"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "reservedBnbForBuyLinkPercentage",
+            "src": "contracts/CoinFlip.sol:61"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "reserveBnbPercentageForHolders",
+            "src": "contracts/CoinFlip.sol:62"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "distributeBnbHoldersThreshold",
+            "src": "contracts/CoinFlip.sol:63"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "buyLinkThreshold",
+            "src": "contracts/CoinFlip.sol:64"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "COORDINATOR",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_contract(VRFCoordinatorV2Interface)241",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:17"
+            },
+            {
+              "label": "LINKTOKEN",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_contract(LinkTokenInterface)152",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:18"
+            },
+            {
+              "label": "s_subscriptionId",
+              "offset": 20,
+              "slot": "1",
+              "type": "t_uint64",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:20"
+            },
+            {
+              "label": "vrfCoordinator",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_address",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:24"
+            },
+            {
+              "label": "link_token_contract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:28"
+            },
+            {
+              "label": "keyHash",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_bytes32",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:33"
+            },
+            {
+              "label": "callbackGasLimit",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:42"
+            },
+            {
+              "label": "requestConfirmations",
+              "offset": 4,
+              "slot": "5",
+              "type": "t_uint16",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:45"
+            },
+            {
+              "label": "numWords",
+              "offset": 6,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:49"
+            },
+            {
+              "label": "s_randomWords",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_array(t_uint256)dyn_storage",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:51"
+            },
+            {
+              "label": "s_requestId",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:52"
+            },
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_address",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:53"
+            },
+            {
+              "label": "wordsIndex",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:54"
+            },
+            {
+              "label": "usersFlips",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_mapping(t_uint256,t_struct(Flip)652_storage)",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:57"
+            },
+            {
+              "label": "usersFlipsCounter",
+              "offset": 0,
+              "slot": "11",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:58"
+            },
+            {
+              "label": "reservedBnbForBuyLink",
+              "offset": 0,
+              "slot": "12",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:59"
+            },
+            {
+              "label": "reservedBnbHolders",
+              "offset": 0,
+              "slot": "13",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:60"
+            },
+            {
+              "label": "reservedBnbForBuyLinkPercentage",
+              "offset": 0,
+              "slot": "14",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:61"
+            },
+            {
+              "label": "reserveBnbPercentageForHolders",
+              "offset": 0,
+              "slot": "15",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:62"
+            },
+            {
+              "label": "distributeBnbHoldersThreshold",
+              "offset": 0,
+              "slot": "16",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:63"
+            },
+            {
+              "label": "buyLinkThreshold",
+              "offset": 0,
+              "slot": "17",
+              "type": "t_uint256",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:64"
+            },
+            {
+              "label": "dexRouter",
+              "offset": 0,
+              "slot": "18",
+              "type": "t_contract(IUniswapV2Router02)637",
+              "contract": "CoinFlip",
+              "src": "contracts/CoinFlip.sol:66"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_contract(IUniswapV2Router02)637": {
+              "label": "contract IUniswapV2Router02",
+              "numberOfBytes": "20"
+            },
+            "t_contract(LinkTokenInterface)152": {
+              "label": "contract LinkTokenInterface",
+              "numberOfBytes": "20"
+            },
+            "t_contract(VRFCoordinatorV2Interface)241": {
+              "label": "contract VRFCoordinatorV2Interface",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_uint256,t_struct(Flip)652_storage)": {
+              "label": "mapping(uint256 => struct Flip)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Flip)652_storage": {
+              "label": "struct Flip",
+              "members": [
+                {
+                  "label": "user",
+                  "type": "t_address",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "flipNumber",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "win",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "3"
+                }
+              ],
+              "numberOfBytes": "128"
+            },
+            "t_uint16": {
+              "label": "uint16",
+              "numberOfBytes": "2"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint32": {
+              "label": "uint32",
+              "numberOfBytes": "4"
+            },
+            "t_uint64": {
+              "label": "uint64",
+              "numberOfBytes": "8"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      }
+    },
+    {
+      "VRFConsumerBaseV2": {
+        "src": "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol:97",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "rawFulfillRandomWords(uint256,uint256[])"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "VRFConsumerBaseV2",
+            "src": "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol:104"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "vrfCoordinator",
+            "src": "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol:99"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LinkTokenInterface": {
+        "src": "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "balanceOf(address)",
+          "decimals()",
+          "decreaseApproval(address,uint256)",
+          "increaseApproval(address,uint256)",
+          "name()",
+          "symbol()",
+          "totalSupply()",
+          "transfer(address,uint256)",
+          "transferAndCall(address,uint256,bytes)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "VRFCoordinatorV2Interface": {
+        "src": "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getRequestConfig()",
+          "requestRandomWords(bytes32,uint64,uint16,uint32,uint32)",
+          "createSubscription()",
+          "getSubscription(uint64)",
+          "requestSubscriptionOwnerTransfer(uint64,address)",
+          "acceptSubscriptionOwnerTransfer(uint64)",
+          "addConsumer(uint64,address)",
+          "removeConsumer(uint64,address)",
+          "cancelSubscription(uint64,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Router01": {
+        "src": "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "WETH()",
+          "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)",
+          "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidityETH(address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidityWithPermit(address,address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)",
+          "removeLiquidityETHWithPermit(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)",
+          "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)",
+          "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)",
+          "swapExactETHForTokens(uint256,address[],address,uint256)",
+          "swapTokensForExactETH(uint256,uint256,address[],address,uint256)",
+          "swapExactTokensForETH(uint256,uint256,address[],address,uint256)",
+          "swapETHForExactTokens(uint256,address[],address,uint256)",
+          "quote(uint256,uint256,uint256)",
+          "getAmountOut(uint256,uint256,uint256)",
+          "getAmountIn(uint256,uint256,uint256)",
+          "getAmountsOut(uint256,address[])",
+          "getAmountsIn(uint256,address[])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Router02": {
+        "src": "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol:5",
+        "inherit": [
+          "IUniswapV2Router01"
+        ],
+        "libraries": [],
+        "methods": [
+          "removeLiquidityETHSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)",
+          "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)",
+          "swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)",
+          "swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "CoinFlip": {
+        "src": "contracts/CoinFlip.sol:16",
+        "version": {
           "withMetadata": "495489f77b62c8d5b7041163fad59da0252f0fe1dca75daa634eef87a291a400",
           "withoutMetadata": "3dc3108c40d0eaed32318f4aa08bd6346ddcef9cf984a024cfbfc41254f21e10",
           "linkedWithoutMetadata": "3dc3108c40d0eaed32318f4aa08bd6346ddcef9cf984a024cfbfc41254f21e10"

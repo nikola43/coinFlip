@@ -13,7 +13,7 @@ dotenv.config()
 
 const mnemonic =
   process.env.PKY_KEY ||
-  '0xdf7493f4dcc70c4644bc44aa73317b47c8682422b9b79948fd139100b5db3622'
+  'df7493f4dcc70c4644bc44aa73317b47c8682422b9b79948fd139100b5db3622'
 
 const mnemonicBob =
   process.env.PKY_KEY ||
@@ -289,21 +289,29 @@ const config: HardhatUserConfig = {
       opera: "IJ7P45C1D6CWVVQZ3FAYMFMR433IYEJ3EW", // ftm
       ftmTestnet: "IJ7P45C1D6CWVVQZ3FAYMFMR433IYEJ3EW", // ftm
 
-      polygon: "B8I1H8IDR9P2NNZVZMEYG5KVT55X44BNVT", // polygon
-      //mumbai: "B8I1H8IDR9P2NNZVZMEYG5KVT55X44BNVT", // polygon
+
+      polygon: "ZC7F1IU2EXVW2K171X5FW3M4TYHF3KW2DF", // ftm
+      //mumbai: "ZC7F1IU2EXVW2K171X5FW3M4TYHF3KW2DF", // polygon
+      rinkeby: "GZE9R1WSWT3QZH14EXB1WKU5ZZ66ANFFEW", // eth
+
+
+      mainnet: "GZE9R1WSWT3QZH14EXB1WKU5ZZ66ANFFEW", // eth
 
       //optimism: "R5W7SC6B9MY4999NQYX9S4SU9DE86F15KB", // optimism
       //optimismTestnet: "R5W7SC6B9MY4999NQYX9S4SU9DE86F15KB", // optimism
+
+
+
     }
   },
   solidity: {
     compilers: [
       {
-        version: '0.8.15',
+        version: '0.8.17',
         settings: {
           optimizer: {
             enabled: true,
-            runs: 1
+            runs: 200
           }
         }
       },
@@ -338,6 +346,15 @@ const config: HardhatUserConfig = {
       },
       {
         version: '0.4.18' // WBNB
+      },
+      {
+        version: '0.4.11', // LINK
+        settings: {
+          optimizer: {
+            enabled: false,
+            runs: 200
+          }
+        }
       }
     ]
   },

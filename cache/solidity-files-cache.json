@@ -169,15 +169,15 @@
       ]
     },
     "/home/thyke/dev/coinFlip/coinFlip/contracts/CoinFlip.sol": {
-      "lastModificationDate": 1662986046534,
-      "contentHash": "172ac542597635a7b558f6d1fe93382a",
+      "lastModificationDate": 1662987335944,
+      "contentHash": "79359148821d6c4f41c9acbe22572a16",
       "sourceName": "contracts/CoinFlip.sol",
       "solcConfig": {
-        "version": "0.8.15",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 1
+            "runs": 200
           },
           "outputSelection": {
             "*": {
@@ -203,7 +203,7 @@
         "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol"
       ],
       "versionPragmas": [
-        "^0.8.15"
+        "^0.8.17"
       ],
       "artifacts": [
         "CoinFlip"
@@ -214,11 +214,11 @@
       "contentHash": "56ec852a2aeddf81bf5a5720a7fc6a63",
       "sourceName": "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol",
       "solcConfig": {
-        "version": "0.8.15",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 1
+            "runs": 200
           },
           "outputSelection": {
             "*": {
@@ -250,11 +250,11 @@
       "contentHash": "eb9cc526ef59dfc4d644f56ddca0633a",
       "sourceName": "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol",
       "solcConfig": {
-        "version": "0.8.15",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 1
+            "runs": 200
           },
           "outputSelection": {
             "*": {
@@ -281,93 +281,16 @@
         "VRFConsumerBaseV2"
       ]
     },
-    "/home/thyke/dev/coinFlip/coinFlip/contracts/ITykheLuckyOracle.sol": {
-      "lastModificationDate": 1661711506895,
-      "contentHash": "477a274084f60325d7e7713bc9f6f2d5",
-      "sourceName": "contracts/ITykheLuckyOracle.sol",
-      "solcConfig": {
-        "version": "0.8.15",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.14"
-      ],
-      "artifacts": [
-        "ITykheLuckyOracle"
-      ]
-    },
-    "/home/thyke/dev/coinFlip/coinFlip/contracts/TykheLuckyOracle.sol": {
-      "lastModificationDate": 1661726350766,
-      "contentHash": "d9a86fcdea7bd3d4eb81aaa754357d64",
-      "sourceName": "contracts/TykheLuckyOracle.sol",
-      "solcConfig": {
-        "version": "0.8.15",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol",
-        "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol",
-        "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol",
-        "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.7"
-      ],
-      "artifacts": [
-        "TykheLuckyOracle"
-      ]
-    },
     "/home/thyke/dev/coinFlip/coinFlip/node_modules/@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol": {
       "lastModificationDate": 1661638775533,
       "contentHash": "da5a0c3bd86c896f6a407f909c57edf3",
       "sourceName": "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol",
       "solcConfig": {
-        "version": "0.8.15",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 1
+            "runs": 200
           },
           "outputSelection": {
             "*": {
@@ -399,11 +322,11 @@
       "contentHash": "3fd36426274a5b35f7e702f87ba08a8e",
       "sourceName": "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol",
       "solcConfig": {
-        "version": "0.8.15",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 1
+            "runs": 200
           },
           "outputSelection": {
             "*": {
@@ -437,11 +360,11 @@
       "contentHash": "95d8729b2c698dc663322167b3c085fe",
       "sourceName": "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol",
       "solcConfig": {
-        "version": "0.8.15",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 1
+            "runs": 200
           },
           "outputSelection": {
             "*": {
